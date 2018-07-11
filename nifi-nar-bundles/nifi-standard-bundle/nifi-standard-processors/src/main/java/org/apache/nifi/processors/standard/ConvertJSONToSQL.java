@@ -909,8 +909,13 @@ public class ConvertJSONToSQL extends AbstractProcessor {
             }
 
             final String columnName = resultSet.getString("COLUMN_NAME");
-            final int dataType = resultSet.getInt("DATA_TYPE");
+            int dataType = resultSet.getInt("DATA_TYPE");
             final int colSize = resultSet.getInt("COLUMN_SIZE");
+            // oracle bool issue
+            if(dataType ==Types.DECIMAL && colSize ==1)
+            {
+                dataType = Types.BOOLEAN;
+            }
 
             final String nullableValue = resultSet.getString("IS_NULLABLE");
             final boolean isNullable = "YES".equalsIgnoreCase(nullableValue) || nullableValue.isEmpty();
