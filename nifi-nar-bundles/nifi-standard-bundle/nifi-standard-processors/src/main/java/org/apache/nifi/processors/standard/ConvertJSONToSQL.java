@@ -717,7 +717,9 @@ public class ConvertJSONToSQL extends AbstractProcessor {
             final Integer colSize = desc.getColumnSize();
             String fieldValue = rootNode.get(fieldName).asText();
             if (colSize != null && fieldValue.length() > colSize) {
-                fieldValue = fieldValue.substring(0, colSize);
+                if(sqlType != Types.TIMESTAMP){
+                    fieldValue = fieldValue.substring(0, colSize);
+                }
             }
             attributes.put(attributePrefix + ".args." + fieldCount + ".value", fieldValue);
         }
